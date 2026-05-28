@@ -1,0 +1,220 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50
+            flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-lg">
+
+    <!-- ===== BACK BUTTON ===== -->
+    <a routerLink="/"
+      class="inline-flex items-center gap-2 text-gray-500 hover:text-blue-600
+             font-medium mb-6 transition-colors group">
+      <span class="group-hover:-translate-x-1 transition-transform inline-block">←</span>
+      Back to Student List
+    </a>
+
+    <!-- ===== MAIN CARD ===== -->
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
+
+      <!-- Card Header -->
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-8 py-7">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center
+                      justify-center text-2xl shadow-inner">
+            {{ isEditMode ? '✏️' : '🎓' }}
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-white">
+              {{ isEditMode ? 'Edit Student' : 'Add New Student' }}
+            </h2>
+            <p class="text-blue-200 text-sm mt-0.5">
+              {{ isEditMode
+                  ? 'Update ' + (originalStudent?.name || 'student') + '\'s information'
+                  : 'Fill in the details to enroll a new student' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== LOADING SPINNER ===== -->
+      @if (isLoading) {
+        <div class="flex flex-col items-center justify-center py-16 gap-4">
+          <div class="w-12 h-12 border-4 border-blue-200 border-t-blue-600
+                      rounded-full animate-spin"></div>
+          <p class="text-gray-400 font-medium">Loading student data...</p>
+        </div>
+      }
+
+      <!-- ===== FORM BODY ===== -->
+      @if (!isLoading) {
+        <div class="px-8 py-7">
+
+          <!-- Original Info Banner (Edit Mode Only) -->
+          @if (isEditMode && originalStudent) {
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl
+                        px-5 py-3 mb-6 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center
+                          justify-center text-white font-bold flex-shrink-0">
+                {{ originalStudent.name.charAt(0).toUpperCase() }}
+              </div>
+              <div>
+                <p class="text-blue-800 font-semibold text-sm">
+                  Editing: {{ originalStudent.name }}
+                </p>
+                <p class="text-blue-500 text-xs">
+                  ID #{{ originalStudent.id }} · {{ originalStudent.course }}
+                </p>
+              </div>
+            </div>
+          }
+
+          <!-- Success Message -->
+          @if (successMessage) {
+            <div class="bg-green-50 border border-green-200 rounded-2xl
+                        px-5 py-4 mb-6 flex items-center gap-3 animate-pulse">
+              <span class="text-2xl">✅</span>
+              <p class="text-green-700 font-semibold">{{ successMessage }}</p>
+            </div>
+          }
+
+          <!-- Error Message -->
+          @if (errorMessage) {
+            <div class="bg-red-50 border border-red-200 rounded-2xl
+                        px-5 py-4 mb-6 flex items-center gap-3">
+              <span class="text-2xl">⚠️</span>
+              <p class="text-red-600 font-medium">{{ errorMessage }}</p>
+            </div>
+          }
+
+          <!-- ===== FORM ===== -->
+          <form (ngSubmit)="onSubmit()" #studentForm="ngForm">
+            <div class="space-y-5">
+
+              <!-- Name -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  👤 Full Name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  [(ngModel)]="student.name"
+                  name="name"
+                  type="text"
+                  placeholder="e.g. Rahul Sharma"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
+                         focus:outline-none focus:border-blue-500
+                         text-gray-700 placeholder-gray-300 bg-gray-50
+                         hover:border-gray-300 transition-colors duration-200"
+                />
+              </div>
+
+              <!-- Age -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  🎂 Age <span class="text-red-500">*</span>
+                </label>
+                <input
+                  [(ngModel)]="student.age"
+                  name="age"
+                  type="number"
+                  min="1"
+                  max="100"
+                  placeholder="e.g. 21"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
+                         focus:outline-none focus:border-blue-500
+                         text-gray-700 placeholder-gray-300 bg-gray-50
+                         hover:border-gray-300 transition-colors duration-200"
+                />
+              </div>
+
+              <!-- Course -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  📚 Course <span class="text-red-500">*</span>
+                </label>
+                <input
+                  [(ngModel)]="student.course"
+                  name="course"
+                  type="text"
+                  placeholder="e.g. Computer Science"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
+                         focus:outline-none focus:border-blue-500
+                         text-gray-700 placeholder-gray-300 bg-gray-50
+                         hover:border-gray-300 transition-colors duration-200"
+                />
+              </div>
+
+              <!-- Phone -->
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">
+                  📞 Phone Number <span class="text-red-500">*</span>
+                </label>
+                <input
+                  [(ngModel)]="student.phone"
+                  name="phone"
+                  type="text"
+                  placeholder="e.g. 9322818115"
+                  class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl
+                         focus:outline-none focus:border-blue-500
+                         text-gray-700 placeholder-gray-300 bg-gray-50
+                         hover:border-gray-300 transition-colors duration-200"
+                />
+              </div>
+
+            </div>
+
+            <!-- ===== BUTTONS ===== -->
+            <div class="flex gap-3 mt-8">
+
+              <!-- Save / Update Button -->
+              <button
+                type="submit"
+                [disabled]="isSaving"
+                class="flex-1 flex items-center justify-center gap-2
+                       bg-blue-600 hover:bg-blue-700 active:bg-blue-800
+                       disabled:bg-blue-300 disabled:cursor-not-allowed
+                       text-white py-3.5 rounded-xl font-bold text-base
+                       transition-all duration-200 shadow-md hover:shadow-lg">
+                @if (isSaving) {
+                  <span class="w-5 h-5 border-2 border-white/30 border-t-white
+                               rounded-full animate-spin"></span>
+                  <span>{{ isEditMode ? 'Updating...' : 'Saving...' }}</span>
+                } @else {
+                  <span>{{ isEditMode ? '💾 Update Student' : '➕ Add Student' }}</span>
+                }
+              </button>
+
+              <!-- Reset Button -->
+              <button
+                type="button"
+                (click)="onReset()"
+                [title]="isEditMode ? 'Reset to original values' : 'Clear all fields'"
+                class="px-5 py-3.5 bg-gray-100 hover:bg-gray-200
+                       text-gray-600 rounded-xl font-semibold transition
+                       flex items-center gap-1.5">
+                🔄
+                <span class="hidden sm:inline">
+                  {{ isEditMode ? 'Reset' : 'Clear' }}
+                </span>
+              </button>
+
+              <!-- Cancel Button -->
+              <a routerLink="/"
+                class="px-5 py-3.5 bg-gray-100 hover:bg-gray-200
+                       text-gray-600 rounded-xl font-semibold transition
+                       flex items-center justify-center gap-1.5">
+                ✕
+                <span class="hidden sm:inline">Cancel</span>
+              </a>
+
+            </div>
+
+          </form>
+        </div>
+      }
+
+    </div>
+
+    <!-- Required Fields Note -->
+    <p class="text-center text-gray-400 text-sm mt-5">
+      Fields marked <span class="text-red-400 font-bold">*</span> are required
+    </p>
+
+  </div>
+</div>

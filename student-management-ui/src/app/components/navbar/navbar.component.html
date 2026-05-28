@@ -1,0 +1,42 @@
+<nav class="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 
+            shadow-lg sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3.5 
+              flex items-center justify-between">
+
+    <!-- Logo -->
+    <a [routerLink]="['/']"
+      class="flex items-center gap-3 group cursor-pointer">
+      <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center 
+                  justify-center text-2xl shadow-inner
+                  group-hover:bg-white/30 transition">
+        🎓
+      </div>
+      <div>
+        <p class="text-white font-extrabold text-lg leading-tight tracking-wide">
+          Student Management
+        </p>
+        <p class="text-blue-200 text-xs">
+          System
+        </p>
+      </div>
+    </a>
+
+    <!-- Nav Links -->
+    <div class="flex items-center gap-3">
+      <a [routerLink]="['/']"
+        routerLinkActive="bg-white/20"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="flex items-center gap-2 text-white hover:bg-white/10
+               px-4 py-2 rounded-xl font-medium transition">
+        🏠 <span class="hidden sm:inline">Home</span>
+      </a>
+      <a [routerLink]="['/add']"
+        class="flex items-center gap-2 bg-yellow-400 hover:bg-yellow-300
+               text-gray-800 px-5 py-2 rounded-xl font-bold
+               transition shadow-md hover:shadow-lg">
+        ＋ <span class="hidden sm:inline">Add Student</span>
+      </a>
+    </div>
+
+  </div>
+</nav>
